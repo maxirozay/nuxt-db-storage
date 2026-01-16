@@ -19,7 +19,7 @@ async function uploadFile(event: Event) {
   const file = input.files[0]
   uploading.value = true
   const formData = new FormData()
-  formData.append('file', file)
+  formData.append('file', file!)
 
   try {
     await $fetch('/api/files/upload', {
@@ -52,7 +52,7 @@ async function deleteFile(id: number) {
 <template>
   <div style="padding: 2rem; font-family: sans-serif;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-      <h1>Welcome {{ user.name }}</h1>
+      <h1>Welcome {{ user!.name }}</h1>
       <button @click="logout">Logout</button>
     </div>
 
