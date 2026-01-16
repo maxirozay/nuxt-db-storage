@@ -8,7 +8,9 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "db:seed": "npx jiti ./server/database/seed.ts"
+    "db:seed": "npx jiti ./server/database/seed.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "npx jiti ./server/database/migrate.ts"
   },
   "dependencies": {
     "@nuxt/hints": "^1.0.0-alpha.5",
