@@ -12,8 +12,15 @@ export default defineEventHandler(async (event) => {
     event.node.res.write(`data: ${JSON.stringify(data)}\n\n`)
   }
 
-  const listener = () => {
-    sendEvent({ type: 'change' })
+  const query = getQuery(event)
+  const filterPath = query.path as string
+
+  const listener = (data?: { path: string }) => {
+    // If a filter is set, check if the file path matches
+    if (filterPath && data?.path && !data.path.startsWith(`/uploads/${filterPath}`)) {
+      return
+    }
+    sendEvent({ type: 'change', path: data?.path })
   }
 
   fileHub.on('change', listener)

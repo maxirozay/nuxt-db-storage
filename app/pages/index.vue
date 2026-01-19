@@ -6,6 +6,7 @@ definePageMeta({
 const { user, clear: clearSession } = useUserSession()
 const { data: fileList, refresh } = await useFetch('/api/files')
 const uploading = ref(false)
+const path = ref('realtime')
 
 async function logout () {
   await clearSession()
@@ -20,6 +21,7 @@ async function uploadFile(event: Event) {
   uploading.value = true
   const formData = new FormData()
   formData.append('file', file!)
+  formData.append('path', path.value)
 
   try {
     await $fetch('/api/files/upload', {
@@ -51,7 +53,7 @@ async function deleteFile(id: number) {
 let eventSource: EventSource | null = null
 
 onMounted(() => {
-  eventSource = new EventSource('/api/files/listen')
+  eventSource = new EventSource('/api/files/listen?path=realtime')
   eventSource.onmessage = (event) => {
     const data = JSON.parse(event.data)
     if (data.type === 'change') {
@@ -76,6 +78,7 @@ onUnmounted(() => {
 
     <div style="margin-bottom: 2rem; border: 1px dashed #ccc; padding: 2rem;">
       <h3>Upload File</h3>
+      <input type="text" v-model="path">
       <input type="file" @change="uploadFile" :disabled="uploading" />
       <span v-if="uploading">Uploading...</span>
     </div>

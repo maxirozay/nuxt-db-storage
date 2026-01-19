@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
   await db.delete(files).where(eq(files.id, Number(id)))
 
   // Notify listeners about the deleted file
-  fileHub.emit('change')
+  fileHub.emit('change', { path: file.path })
 
   return { success: true }
 })
