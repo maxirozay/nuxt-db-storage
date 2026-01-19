@@ -5,6 +5,10 @@ const password = ref('')
 const loading = ref(false)
 const otpRequested = ref(false)
 
+const isPasswordValid = computed(() => {
+  return /.{12,}|[0-9]{6}/.test(password.value)
+})
+
 async function requestOtp() {
   if (!email.value) return
   loading.value = true
@@ -55,39 +59,50 @@ async function signInWithPassword() {
 }
 
 function signin() {
-  if (!password.value) requestOtp()
-  else if (password.value.length === 6) verifyOtp()
-  else signInWithPassword()
+  if (!email.value || !password.value) return
+  setTimeout(() => {
+    if (!password.value) requestOtp()
+    else if (password.value.length === 6) verifyOtp()
+    else signInWithPassword()
+  }, 100) // wait for paste event to complete
 }
 </script>
 
 <template>
   <div>
     <h1>Sign In</h1>
-
     <form @submit.prevent="signin">
+      <label for="email">Email</label>
       <input
+        id="email"
         v-model="email"
         type="email"
-        placeholder="Email"
         required
         :disabled="loading"
+        autocomplete="username"
       >
+      <br>
+      <label for="password">Password or code</label>
       <input
+        id="password"
         v-model="password"
         type="password"
-        placeholder="Password or Code"
+        :disabled="loading"
+        autocomplete="current-password"
+        pattern=".{12,}|[0-9]{6}"
+        @paste="signin"
+      >
+      <p v-if="password && !isPasswordValid"">
+        The password must be at least 12 characters long or be the code that you received.
+      </p>
+      <br>
+      <button
+        type="submit"
         :disabled="loading"
       >
-      <button type="submit" :disabled="loading">
-        {{ loading ? 'Signing in...' : password ? 'Sign In' : 'Request OTP' }}
+        {{ loading ? 'Signing in...' : password ? 'Sign In' : 'Request Code' }}
       </button>
-      <p
-        v-if="otpRequested"
-        style="margin-bottom: 1rem;"
-      >
-        OTP sent to {{ email }}
-      </p>
+      <p v-if="otpRequested">Code sent to {{ email }}</p>
     </form>
   </div>
 </template>

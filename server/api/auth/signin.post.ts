@@ -4,7 +4,7 @@ import { users } from '~~/server/database/schema'
 
 const bodySchema = z.object({
   email: z.email(),
-  password: z.string().min(8),
+  password: z.string().min(12),
 })
 
 export default defineEventHandler(async (event) => {

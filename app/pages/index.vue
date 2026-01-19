@@ -72,7 +72,7 @@ onUnmounted(() => {
 <template>
   <div style="padding: 2rem; font-family: sans-serif;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-      <h1>Welcome {{ user!.name }}</h1>
+      <h1>Welcome {{ user?.name }}</h1>
       <button @click="signout">Sign Out</button>
     </div>
 
