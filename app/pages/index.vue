@@ -8,9 +8,9 @@ const { data: fileList, refresh } = await useFetch('/api/files')
 const uploading = ref(false)
 const path = ref('realtime')
 
-async function logout () {
+async function signout () {
   await clearSession()
-  await navigateTo('/login')
+  await navigateTo('/signin')
 }
 
 async function uploadFile(event: Event) {
@@ -73,7 +73,7 @@ onUnmounted(() => {
   <div style="padding: 2rem; font-family: sans-serif;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
       <h1>Welcome {{ user!.name }}</h1>
-      <button @click="logout">Logout</button>
+      <button @click="signout">Sign Out</button>
     </div>
 
     <div style="margin-bottom: 2rem; border: 1px dashed #ccc; padding: 2rem;">
