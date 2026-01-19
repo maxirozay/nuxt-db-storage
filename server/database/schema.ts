@@ -1,10 +1,11 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core'
+import { sql } from 'drizzle-orm'
 
 export const users = sqliteTable('users', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   name: text('name').notNull(),
   email: text('email').notNull().unique(),
-  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(new Date()),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(CURRENT_TIMESTAMP)`),
 })
 
 export const files = sqliteTable('files', {
@@ -13,5 +14,5 @@ export const files = sqliteTable('files', {
   path: text('path').notNull(),
   size: integer('size').notNull(),
   mimeType: text('mime_type').notNull(),
-  uploadedAt: integer('uploaded_at', { mode: 'timestamp' }).notNull().default(new Date()),
+  uploadedAt: integer('uploaded_at', { mode: 'timestamp' }).notNull().default(sql`(CURRENT_TIMESTAMP)`),
 })

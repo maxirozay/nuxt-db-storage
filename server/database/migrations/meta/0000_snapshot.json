@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "cc3fefa0-232f-44bd-9fea-945c92c8e64f",
+  "id": "b2bf0a04-4bb0-4d42-9ce3-fff909f9d60e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "files": {
@@ -48,7 +48,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2026-01-16T16:32:27.832Z\"'"
+          "default": "(CURRENT_TIMESTAMP)"
         }
       },
       "indexes": {},
@@ -87,7 +87,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'\"2026-01-16T16:32:27.832Z\"'"
+          "default": "(CURRENT_TIMESTAMP)"
         }
       },
       "indexes": {
