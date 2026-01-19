@@ -30,6 +30,9 @@ export default defineEventHandler(async (event) => {
     }
   }
 
+  // Notify listeners about the new file
+  fileHub.emit('change')
+
   return {
     success: true,
     files: uploadedFiles

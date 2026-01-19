@@ -47,6 +47,24 @@ async function deleteFile(id: number) {
     alert(e.data?.statusMessage || 'Delete failed')
   }
 }
+
+let eventSource: EventSource | null = null
+
+onMounted(() => {
+  eventSource = new EventSource('/api/files/listen')
+  eventSource.onmessage = (event) => {
+    const data = JSON.parse(event.data)
+    if (data.type === 'change') {
+      refresh()
+    }
+  }
+})
+
+onUnmounted(() => {
+  if (eventSource) {
+    eventSource.close()
+  }
+})
 </script>
 
 <template>
