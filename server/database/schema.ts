@@ -7,6 +7,7 @@ export const users = sqliteTable('users', {
   email: text('email').notNull().unique(),
   password: text('password'),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull().default(sql`(CURRENT_TIMESTAMP)`),
+  settings: text('', { mode: 'json' }).notNull().default(sql`('{}')`),
 })
 
 export const files = sqliteTable('files', {

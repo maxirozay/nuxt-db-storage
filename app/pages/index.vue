@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import type { User } from '#auth-utils'
+
 definePageMeta({
   middleware: ['authenticated'],
 })
 
 const { user, clear: clearSession } = useUserSession()
 const { data: fileList, refresh } = await useFetch('/api/files')
+const { data: publicUsers } = await useFetch<User[]>('/api/public-users')
 const uploading = ref(false)
 const path = ref('realtime')
 
@@ -52,6 +55,11 @@ async function deleteFile(id: number) {
 
 let eventSource: EventSource | null = null
 
+function setPublicUser() {
+  return $fetch('/api/public-users', {
+    method: 'POST'
+  })
+}
 onMounted(() => {
   eventSource = new EventSource('/api/files/listen?path=realtime')
   eventSource.onmessage = (event) => {
@@ -66,6 +74,7 @@ onUnmounted(() => {
   if (eventSource) {
     eventSource.close()
   }
+  setPublicUser()
 })
 </script>
 
@@ -95,5 +104,13 @@ onUnmounted(() => {
       </li>
     </ul>
     <p v-else>No files uploaded yet.</p>
+
+    <h2>Your Public Users</h2>
+    <div
+      v-for="user in publicUsers"
+      :key="user.id"
+    >
+      <p>{{ user.name }} - {{ user.email }}</p>
+    </div>
   </div>
 </template>
