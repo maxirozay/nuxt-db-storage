@@ -1,0 +1,12 @@
+services:
+  test:
+    image: test
+    restart: unless-stopped
+    environment:
+      NUXT_SESSION_PASSWORD: ${NUXT_SESSION_PASSWORD}
+      NUXT_DB: ${NUXT_DB}
+    volumes:
+      - ../db:/db
+      - ./files:/app/public/uploads
+    ports:
+      - 3000:3000

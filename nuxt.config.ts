@@ -5,6 +5,9 @@ export default defineNuxtConfig({
       database: true
     }
   },
+  runtimeConfig: {
+    db: 'sqlite.db',
+  },
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   modules: ['@nuxt/hints', '@nuxt/image', 'nuxt-auth-utils']
