@@ -24,17 +24,31 @@ export default defineEventHandler(async (event) => {
 
   for (const file of body) {
     if (file.filename) {
-      const filename = `${Date.now()}-${file.filename}`
-      const uploadDir = join(process.cwd(), 'public', 'uploads', subDir)
-      await mkdir(uploadDir, { recursive: true })
+      const filename = file.filename
       
-      const savedPath = join(uploadDir, filename)
-      await writeFile(savedPath, file.data)
-
-      const webPath = join('/uploads', subDir, filename)
+      let webPath
+      // Try S3 first if configured
+      const s3 = useS3()
+      if (s3) {
+         const key = join('uploads', subDir, filename).replace(/\\/g, '/')
+         const s3Key = key.startsWith('/') ? key.substring(1) : key
+         const url = await uploadToS3(s3Key, file.data, file.type || 'application/octet-stream')
+         webPath = url
+      }
+      
+      // Fallback to local
+      if (!webPath) {
+        const uploadDir = join(process.cwd(), 'public', 'uploads', subDir)
+        await mkdir(uploadDir, { recursive: true })
+        
+        const savedPath = join(uploadDir, filename)
+        await writeFile(savedPath, file.data)
+  
+        webPath = join('/uploads', subDir, filename)
+      }
 
       const fileRecord = await db.insert(files).values({
-        filename: file.filename,
+        filename,
         path: webPath,
         size: file.data.length,
         mimeType: file.type || 'application/octet-stream',

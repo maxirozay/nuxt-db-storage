@@ -7,6 +7,14 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     db: 'sqlite.db',
+    s3: {
+      endpoint: '',
+      region: 'us-east-1',
+      bucket: '',
+      accessKeyId: '',
+      secretAccessKey: '',
+      publicUrl: ''
+    }
   },
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
