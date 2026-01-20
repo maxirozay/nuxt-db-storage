@@ -1,0 +1,24 @@
+services:
+  drizzle-gateway:
+    image: ghcr.io/drizzle-team/gateway:latest
+    container_name: drizzle-gate
+    restart: always
+    ports:
+      - "4983:4983"
+    environment:
+      - PORT=4983
+      - STORE_PATH=/app
+      - MASTERPASS=password
+    volumes:
+      - gateway-data:/app
+      # Mount the parent directory containing sqlite.db to /db inside the container
+      - ../:/db
+    networks:
+      - gateway-net
+
+volumes:
+  gateway-data:
+
+networks:
+  gateway-net:
+  
