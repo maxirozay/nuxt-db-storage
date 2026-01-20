@@ -10,7 +10,8 @@
     "postinstall": "nuxt prepare",
     "db:seed": "npx jiti ./server/database/seed.ts",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "npx jiti ./server/database/migrate.ts"
+    "db:migrate": "npx jiti ./server/database/migrate.ts",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@nuxt/hints": "^1.0.0-alpha.5",
