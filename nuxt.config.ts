@@ -2,7 +2,11 @@
 export default defineNuxtConfig({
   nitro: {
     experimental: {
-      database: true
+      database: true,
+      tasks: true
+    },
+    scheduledTasks: {
+      '* * * * *': ['test']
     }
   },
   runtimeConfig: {
