@@ -59,7 +59,7 @@ async function signInWithPassword() {
 }
 
 function signin() {
-  if (!email.value || !password.value) return
+  if (!email.value) return
   setTimeout(() => {
     if (!password.value) requestOtp()
     else if (password.value.length === 6) verifyOtp()
