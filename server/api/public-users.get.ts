@@ -9,7 +9,8 @@ export default defineEventHandler(async (event) => {
     email: users.email
   })
   .from(users)
-  .where(sql`json_extract(${users.settings}, '$.is_public') = true`)
+  .where(sql`(${users.settings} ->> 'is_public')::boolean = true`)
+  // .where(sql`json_extract(${users.settings}, '$.is_public') = true`) // sqlite
 
   return publicUsers
 })

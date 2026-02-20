@@ -5,8 +5,11 @@ export default defineEventHandler(async (event) => {
   const session = await requireUserSession(event)
   const userId = session.user.id
 
-  const user = await db.select({ settings: users.settings })
-    .from(users).where(eq(users.id, userId)).get()
+  const user = (await db.select({ settings: users.settings })
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1)
+  )[0]
   
   if (!user) {
     throw createError({ statusCode: 404, message: 'User not found' })

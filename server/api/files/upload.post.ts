@@ -47,13 +47,13 @@ export default defineEventHandler(async (event) => {
         webPath = join('/uploads', subDir, filename)
       }
 
-      const fileRecord = await db.insert(files).values({
+      const [fileRecord] = await db.insert(files).values({
         filename,
         path: webPath,
         size: file.data.length,
         mimeType: file.type || 'application/octet-stream',
-        uploadedAt: new Date(),
-      }).returning().get()
+        uploaded: new Date(),
+      }).returning()
 
       uploadedFiles.push(fileRecord)
     }

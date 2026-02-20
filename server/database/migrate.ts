@@ -1,10 +1,13 @@
+/* sqlite
 import { migrate } from 'drizzle-orm/better-sqlite3/migrator'
 import { drizzle } from 'drizzle-orm/better-sqlite3'
-import Database from 'better-sqlite3'
+*/
+
+import { migrate } from 'drizzle-orm/node-postgres/migrator'
+import { drizzle } from 'drizzle-orm/node-postgres'
 
 // Connect to the database
-const sqlite = new Database(useRuntimeConfig().db)
-const db = drizzle(sqlite)
+const db = drizzle(process.env.NUXT_DB!)
 
 console.log('⏳ Running migrations...')
 
@@ -16,5 +19,5 @@ try {
   console.error('❌ Migration failed:', error)
   process.exit(1)
 } finally {
-  sqlite.close()
+  // sqlite.close() // sqlite doesn't require explicit close, but postgres does
 }

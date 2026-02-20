@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const user = await db.select().from(users).where(eq(users.email, email)).get()
+  const user = (await db.select().from(users).where(eq(users.email, email)))[0]
 
   if (!user) {
     throw createError({
@@ -44,7 +44,7 @@ export default defineEventHandler(async (event) => {
 
   await setUserSession(event, {
     user: {
-      id: user.id,
+      id: user.id!,
       name: user.name,
       email: user.email
     }

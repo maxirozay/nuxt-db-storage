@@ -10,19 +10,22 @@ const bodySchema = z.object({
 export default defineEventHandler(async (event) => {
   const { email, password } = await readValidatedBody(event, bodySchema.parse)
 
-  let user = await db.select().from(users).where(eq(users.email, email)).get()
+  const usersResult = await db.select().from(users).where(eq(users.email, email)).limit(1)
+  let user = usersResult[0]
   if (!user) {
-    user = await db.insert(users).values({
+    const insertedUsers = await db.insert(users).values({
+      // id: crypto.randomUUID(), // sqlite
       email,
       name: email.split('@')[0],
       password: await hashPassword(password)
-    }).returning().get()
+    }).returning()
+    user = insertedUsers[0]
   }
   
   if (user!.password && await verifyPassword(user.password, password)) {
     await setUserSession(event, {
       user: {
-        id: user.id,
+        id: user.id!,
         email,
         name: user.name,
       },

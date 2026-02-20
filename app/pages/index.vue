@@ -98,7 +98,7 @@ onUnmounted(() => {
         <a :href="file.path" target="_blank">{{ file.filename }}</a> 
         <span style="color: #666; font-size: 0.9em;">
           ({{ Math.round(file.size / 1024) }} KB) - 
-          {{ new Date(file.uploadedAt).toLocaleString() }}
+          {{ new Date(file.uploaded!).toLocaleString() }}
         </span>
         <button @click="deleteFile(file.id)" style="color: red; cursor: pointer;">Delete</button>
       </li>

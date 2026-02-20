@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')
   
   // 1. Get file info from DB
-  const file = await db.select().from(files).where(eq(files.id, Number(id))).get()
+  const file = (await db.select().from(files).where(eq(files.id, Number(id))))[0]
   
   if (!file) {
     throw createError({ statusCode: 404, statusMessage: 'File not found' })

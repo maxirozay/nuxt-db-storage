@@ -16,13 +16,14 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  let user = await db.select().from(users).where(eq(users.email, email)).get()
+  let user = (await db.select().from(users).where(eq(users.email, email)))[0]
 
   if (!user) {
-    user = await db.insert(users).values({
+    user = (await db.insert(users).values({
+      // id: crypto.randomUUID(), // sqlite
       email,
       name: email.split('@')[0]
-    }).returning().get()
+    }).returning())[0]
   }
 
   const otp = Math.floor(100000 + Math.random() * 900000).toString()
