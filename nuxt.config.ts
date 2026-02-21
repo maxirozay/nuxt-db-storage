@@ -18,6 +18,13 @@ export default defineNuxtConfig({
       accessKeyId: '',
       secretAccessKey: '',
       publicUrl: ''
+    },
+    oauth: {
+      microsoft: {
+        clientId: '',
+        clientSecret: '',
+        tenant: '',
+      }
     }
   },
   compatibilityDate: '2025-07-15',

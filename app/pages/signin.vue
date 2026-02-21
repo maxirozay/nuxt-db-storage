@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { user, fetch: refreshSession } = useUserSession()
+const { user, fetch: refreshSession, openInPopup } = useUserSession()
 const email = ref('')
 const password = ref('')
 const loading = ref(false)
@@ -58,6 +58,10 @@ async function signInWithPassword() {
   }
 }
 
+async function signInWithMicrosoft() {
+  openInPopup('/auth/microsoft') // signin but stays on signin page
+}
+
 function signin() {
   if (!email.value) return
   setTimeout(() => {
@@ -102,6 +106,16 @@ function signin() {
       >
         {{ loading ? 'Signing in...' : password ? 'Sign In' : 'Request Code' }}
       </button>
+      <button
+        type="button"
+        :disabled="loading"
+        @click="signInWithMicrosoft"
+      >
+        Sign in with Microsoft
+      </button>
+      <a href="/auth/microsoft" class="login-button">
+        Login with Microsoft
+      </a>
       <p v-if="otpRequested">Code sent to {{ email }}</p>
     </form>
   </div>
